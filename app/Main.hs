@@ -25,7 +25,7 @@ import Data.Maybe (fromJust)
 
 overrideUrl :: String -> ClientM a -> ClientM a
 overrideUrl url action = do
-    request <- Http.parseRequest url
+    request :: Http.Request <- Http.parseRequest url
     let transformClientRequest original = 
             original { Http.path = request.path, Http.queryString = request.queryString  }
         transformMakeClientRequest f baseUrl servantReq = do 
