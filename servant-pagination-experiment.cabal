@@ -30,7 +30,9 @@ executable servant-pagination-experiment
         network-uri,
         aeson,
         text,
-        warp
+        warp,
+        mtl,
+        async
 
     hs-source-dirs:   app
     default-language: GHC2024
