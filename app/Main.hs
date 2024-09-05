@@ -21,6 +21,8 @@ import Control.Concurrent.Async
 import Control.Concurrent (threadDelay)
 import Data.Maybe (fromJust)
 
+-- The pagination decorator
+
 overrideUrl :: String -> ClientM a -> ClientM a
 overrideUrl url action = do
     request <- Http.parseRequest url
@@ -48,7 +50,7 @@ paginated initial = do
                 Header next -> go (overrideUrl next initial) acc'
     go initial mempty
 
--- The api
+-- The example api
 
 type PaginatedApi = NamedRoutes Foo
 
@@ -64,7 +66,7 @@ data Foo mode = Foo {
 } deriving stock (Generic)
 
 
--- The client
+-- The example client
 
 fooClient :: Client ClientM PaginatedApi
 fooClient = client (Proxy @PaginatedApi)
@@ -72,7 +74,7 @@ fooClient = client (Proxy @PaginatedApi)
 fooClientDecorated :: Client ClientM PaginatedApi
 fooClientDecorated = fooClient { firstContent = paginated fooClient.firstContent}
 
--- 
+-- The example server
 fooServer :: Server PaginatedApi
 fooServer = Foo {
         firstContent = do
@@ -88,12 +90,12 @@ fooServer = Foo {
     }
     where 
     nextLink i = uriToString id (fooRoutes.extraContent i) ""
+    fooRoutes :: MkLink PaginatedApi URI 
+    fooRoutes = allLinks' (\aLink -> linkURI aLink `relativeTo` baseServerUri)  (Proxy @PaginatedApi)
+        where
+        baseServerUri = fromJust $ parseAbsoluteURI "http://localhost:8000"
 
-fooRoutes :: MkLink PaginatedApi URI 
-fooRoutes = allLinks' (\aLink -> linkURI aLink `relativeTo` baseServerUri)  (Proxy @PaginatedApi)
-    where
-    baseServerUri = fromJust $ parseAbsoluteURI "http://localhost:8000"
-
+-- 
 main :: IO ()
 main = do
     race_ 
