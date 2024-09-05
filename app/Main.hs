@@ -53,8 +53,14 @@ paginated initial = do
 type PaginatedApi = NamedRoutes Foo
 
 data Foo mode = Foo {
-    firstContent :: mode :- "contents" :> Get '[JSON] (Headers '[Header "Link" String] [Int]),
-    extraContent :: mode :- "contents-extra" :> Capture "page" Int :>  Get '[JSON] (Headers '[Header "Link" String] [Int])
+    firstContent :: 
+        mode 
+        :- "contents" 
+        :> Get '[JSON] (Headers '[Header "Link" String] [Int]),
+    extraContent :: 
+        mode 
+        :- "contents-extra" 
+        :> Capture "page" Int :>  Get '[JSON] (Headers '[Header "Link" String] [Int])
 } deriving stock (Generic)
 
 
