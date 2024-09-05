@@ -6,7 +6,7 @@ import Network.HTTP.Client.Internal qualified as Http
 import Servant.Client
 import Servant.API
 import Servant.Server
-import Servant.Links
+import Servant.Links (allLinks', linkURI)
 import Data.Proxy
 import GHC.Generics (Generic)
 import Network.URI (uriToString, relativeTo, parseAbsoluteURI)
@@ -17,7 +17,7 @@ import Control.Monad.Reader (local)
 import GHC.TypeLits (Symbol)
 import Control.Exception (throwIO)
 import Control.Monad.IO.Class (liftIO)
-import Control.Concurrent.Async
+import Control.Concurrent.Async (race_)
 import Control.Concurrent (threadDelay)
 import Data.Maybe (fromJust)
 
