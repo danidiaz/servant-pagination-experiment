@@ -22,10 +22,12 @@ executable servant-pagination-experiment
     -- other-modules:
     -- other-extensions:
     build-depends:
+        base,
         servant,
-        servant-api,
+        servant-server,
         servant-client,
-        http-client
+        http-client,
+        aeson
 
     hs-source-dirs:   app
     default-language: GHC2024
