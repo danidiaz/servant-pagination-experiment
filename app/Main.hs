@@ -78,9 +78,7 @@ fooClientDecorated = fooClient { firstContent = paginated fooClient.firstContent
 fooServer :: Server PaginatedApi
 fooServer = Foo {
         firstContent = do
-                pure $ addHeader (nextLink 0) [1,2,3]
-            , -- :: "contents" :> Get '[JSON] (Headers '[Header "Link" String] [Int]),
-
+            pure $ addHeader (nextLink 0) [1,2,3], 
         extraContent = \case
             0 -> do
                 pure $ addHeader (nextLink 1) [4,5,6]
